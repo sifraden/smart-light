@@ -99,4 +99,21 @@ public class EnTrakService {
 
 		restTemplate.exchange(builder.buildAndExpand(params).toUri().toString(), HttpMethod.PUT, request, Object.class, params);
 	}
+	
+	public void switchLightWithDuration(String token, String workStationId, String action, int duration) {
+		LOG.debug("EnTrak Service - Switch Light " + action + " for workstation: " + workStationId);
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+		httpHeaders.set("Authorization", "Bearer " + token);
+		
+		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(uriSwitchLight);
+		
+		Map<String, String> params= new HashMap<String, String>();
+		params.put("duration", String.valueOf(duration));
+		params.put("workstationId", workStationId);
+		params.put("action", action);	
+		HttpEntity<Map<String, String>> request = new HttpEntity<Map<String, String>>(params, httpHeaders);
+
+		restTemplate.exchange(builder.buildAndExpand(params).toUri().toString(), HttpMethod.PUT, request, Object.class, params);
+	}
 }

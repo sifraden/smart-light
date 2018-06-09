@@ -33,6 +33,9 @@ public class SmartLightService {
 	@Value("${entrak.api.client.id}")
 	private String clientId;
 	
+	@Value("${myseat.sensor.dba.value}")
+	private double noiseThreshold;
+	
 	@Autowired
 	private EnTrakService enTrakService;
 
@@ -108,6 +111,19 @@ public class SmartLightService {
 		return enTrakService.getWorkStations(getToken().getAccessToken(), companyId);
 	}
 	
+	public int verifyNoiseAndOccupancy(Sensor blackTable, Sensor sensorNoise) {
+		int index = 0;
+		if (blackTable.getStatus() == 0 && sensorNoise.getValue() < noiseThreshold)
+			index = 0;
+		if (blackTable.getStatus() == 1 && sensorNoise.getValue() < noiseThreshold)
+			index = 1;
+		if (blackTable.getStatus() == 0 && sensorNoise.getValue() > noiseThreshold)
+			index = 1;
+		if (blackTable.getStatus() == 1 && sensorNoise.getValue() > noiseThreshold)
+			index = 1;
+		
+		return index;
+	}
 
 	/**********************
 	 * 

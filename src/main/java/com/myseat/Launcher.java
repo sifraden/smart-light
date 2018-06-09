@@ -32,16 +32,24 @@ public class Launcher extends TimerTask {
 			SmartLightService smartLightService = context.getBean(SmartLightService.class);
 
 			Sensor sensorBrownTable = myseatService.getSensorInfoByLastDate("A0gkjrm6kjcZOSt931lWstlCuoogkwULm1Wwj8rt",
-					String.valueOf(Long.parseLong("158D00005515F1", 16)), 10);
+					"6066005655705708", 10);
 			sensorBrownTable.setWorkStationId("1077");
 
 			Sensor sensorFoamStairs = myseatService.getSensorInfoByLastDate("A0gkjrm6kjcZOSt931lWstlCuoogkwULm1Wwj8rt",
-					String.valueOf(Long.parseLong("158D000053CAB4", 16)), 10);
+					"6066005655937708", 10);
 			sensorFoamStairs.setWorkStationId("1079");
 
 			Sensor sensorBlackTable = myseatService.getSensorInfoByLastDate("A0gkjrm6kjcZOSt931lWstlCuoogkwULm1Wwj8rt",
-					String.valueOf(Long.parseLong("158D000053E40F", 16)), 10);
+					"6066005655706079", 10);
 			sensorBlackTable.setWorkStationId("1078");
+			
+			Sensor noiseSensor =  myseatService.getSensorInfoByLastDate("A0gkjrm6kjcZOSt931lWstlCuoogkwULm1Wwj8rt",
+					"6066005668988672", 10);
+			noiseSensor.setWorkStationId("1078");
+			
+			Sensor sensorCombinaison = new Sensor();
+			sensorCombinaison.setStatus(smartLightService.verifyNoiseAndOccupancy(sensorBlackTable, noiseSensor));
+			sensorCombinaison.setWorkStationId("1078");
 
 			List<Sensor> sensors = Arrays.asList(sensorBrownTable, sensorFoamStairs, sensorBlackTable);
 
@@ -62,6 +70,7 @@ public class Launcher extends TimerTask {
 			}
 		}
 		/*
+		 * String.valueOf(Long.parseLong("158D00005515F1", 16))
 		 * smartLightService.processToTakeDecision(
 		 * myseatService.getSensorInfoByLastDate(
 		 * "lyBRqiFyr53R2h7PbOhuC3XOmmp5S774uzMMHibZ", "6066005655705899", 10),
